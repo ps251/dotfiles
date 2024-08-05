@@ -1,0 +1,196 @@
+#+PROPERTY: header-args:conf-tridactyl :results none :comments both :tangle ~/.config/tridactyl/tridactylrc :tangle-mode (identity #o444)
+#+TITLE: Tridactyl
+# ,#+PROPERTY: header-args :comments both :tangle-mode (identity #o444)
+
+* Basic Bindings
+:PROPERTIES:
+:ID:       66825c4d-5bdf-47e6-8603-bf5f54f70e7f
+:ID_CREATED_AT: [2024-03-20 Mi 19:18:41]
+:END:
+#+begin_src conf-tridactyl
+" " https://github.com/glacambre/.dotfiles/blob/master/default/.config/tridactyl/tridactylrc
+
+
+bind J back
+bind K forward
+bind H tabprev
+bind L tabnext
+
+" " ursprünglich x stop
+bind ⓧ stop
+
+
+" " ursprünglich:
+" " O current_url open
+" " o fillcmdline open
+" " s fillcmdline open search
+" " S fillcmdline tabopen search
+bind s fillcmdline open
+bind S current_url open
+
+
+" " Vertauschen
+bind F hint
+bind f hint -b
+
+
+bind `n jumpnext 1
+bind `p jumpprev 1
+
+bind gdh tabcloseallto left
+bind gdl tabcloseallto right
+bind gD tabonly
+
+bind gS tabsort --url
+
+#+end_src
+* Search Bindings
+:PROPERTIES:
+:ID:       5311aec0-3255-4967-8d87-0c593916d774
+:ID_CREATED_AT: [2024-03-20 Mi 19:18:41]
+:END:
+#+begin_src conf-tridactyl
+set searchurls.y https://www.youtube.com/results?search_query=
+set searchurls.yt https://www.youtube.com/results?search_query=
+
+set searchurls.wiki https://en.wikipedia.org/w/index.php?search=
+set searchurls.w https://en.wikipedia.org/w/index.php?search=
+
+set searchurls.g https://www.google.com/search?q=
+set searchurls.gg https://www.google.com/search?q=
+
+set searchurls.d https://duckduckgo.com/?q=
+set searchurls.dg https://duckduckgo.com/?q=
+
+
+#+end_src
+* Completion
+:PROPERTIES:
+:ID:       6061b9a6-f66a-46d3-9ecb-a1e649a15dde
+:ID_CREATED_AT: [2024-03-20 Mi 19:18:42]
+:END:
+#+begin_src conf-tridactyl
+:set completions.TabAll.autoselect true|false
+#+end_src
+* Quick Website Keywords
+:PROPERTIES:
+:ID:       02d9798b-527d-495a-a188-3fa3cd915e3a
+:ID_CREATED_AT: [2024-03-20 Mi 19:18:42]
+:END:
+#+begin_src conf-tridactyl
+set searchurls.rp https://rpgcodex.net/forums/forums/politics-god-the-wealth-of-nations.57/
+set searchurls.rg https://rpgcodex.net/forums/forums/general-discussion.3/
+set searchurls.rl https://rpgcodex.net/forums/forums/codex-public-library.40/
+set searchurls.rr https://rpgcodex.net/forums/forums/general-rpg-discussion.4/
+
+#+end_src
+* Org Capture Bindings
+:PROPERTIES:
+:ID:       cf491557-1947-4b38-821c-c4d5d3442aae
+:ID_CREATED_AT: [2024-03-20 Mi 19:18:42]
+:END:
+#+begin_src conf-tridactyl
+
+
+" " Roam Select Node
+bind n composite js "org-protocol:///capture?template=y&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+bind ⓝ composite js "org-protocol:///capture?template=ⓨ&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+" " Roam Ref
+bind gc composite js 'org-protocol://roam-ref?template=r&ref=' + encodeURIComponent(location.href) + '&title=' + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+" " Roam Ref
+bind gC composite js 'org-protocol://roam-ref?template=R&ref=' + encodeURIComponent(location.href) + '&title=' + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+" " Work book select   brauch ich nicht mehr wirklcih ..
+" " bind g. composite js "org-protocol:///capture?template=w&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+" " bind g> composite js "org-protocol:///capture?template=ⓦ&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+" " Capture to clock
+bind ś composite js "org-protocol:///capture?template=n&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+bind E composite js "org-protocol:///capture?template=ⓝ&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+
+" " Buffer Headline Selector
+bind m composite js "org-protocol:///capture?template=b&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+bind ⓜ composite js "org-protocol:///capture?template=ⓑ&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+" " last
+bind i composite js "org-protocol:///capture?template=l&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+bind ⓘ composite js "org-protocol:///capture?template=ⓛ&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+" " scratch
+bind a composite js "org-protocol:///capture?template=s&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+bind ⓞ composite js "org-protocol:///capture?template=ⓢ&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+
+" " cursor
+bind c composite js "org-protocol:///capture?template=c&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+bind C composite js "org-protocol:///capture?template=ⓒ&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+" " working marker
+bind x composite js "org-protocol:///capture?template=m&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+bind X composite js "org-protocol:///capture?template=M&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+
+
+" " Todo
+bind ,j composite js "org-protocol:///capture?template=ⓣ&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+bind ,l composite js "org-protocol:///capture?template=Ⓣ&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+bind ' composite js "org-protocol:///capture?template=t&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+bind ä coencodeURIComponent(window.getSelection()) | open
+
+" " Event Capture with Link
+bind ṡ composite js "org-protocol:///capture?template=e&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+bind Ṡ composite js "org-protocol:///capture?template=E&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+
+" " Reading Capture
+bind ⓙ composite js "org-protocol:///capture?template=ⓡ&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+" " Daily Journal Capture
+bind ṣ composite js "org-protocol:///capture?template=d&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+" " immediate finish
+bind Ṣ composite js "org-protocol:///capture?template=ü&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + '&body=' + encodeURIComponent(window.getSelection()) | open
+
+
+
+#+end_src
+
+* Download
+:PROPERTIES:
+:ID:       7e0dbbbd-f817-44b0-bfd8-98ee62b33ce4
+:ID_CREATED_AT: [2024-03-20 Mi 19:18:42]
+:END:
+
+#+begin_src conf-tridactyl
+" " Videos in mpv öffnen
+bind gv hint -W js -p tri.excmds.shellescape(JS_ARG).then(url => tri.excmds.exclaim(`i3-swallow-stack.py mpv --no-terminal --ytdl-format="[height<=720]" --save-position-on-quit ` + `"` + url + `"`))
+bind gV composite get_current_url | js -p tri.excmds.shellescape(JS_ARG).then(url => tri.excmds.exclaim(`i3-swallow-stack.py mpv --no-terminal --ytdl-format="[height<=720]" --save-position-on-quit ` + `"` + url + `"`))
+
+" " Musik herunterladen
+bind gm hint -W js -p tri.excmds.shellescape(JS_ARG).then(url => tri.excmds.exclaim_quiet(`i3-swallow-stack.py terminator -e 'music-download.sh ` + `"` + url + `"` + `'`))
+" " ganze Playlists
+bind gM hint -W js -p tri.excmds.shellescape(JS_ARG).then(url => tri.excmds.exclaim_quiet(`i3-swallow-stack.py terminator -e 'music-download.sh --yes-playlist ` + `"` + url + `"` + `'`))
+
+" " Podcasts herunterladen
+bind gp hint -W js -p tri.excmds.shellescape(JS_ARG).then(url => tri.excmds.exclaim_quiet(`i3-swallow-stack.py terminator -e 'podcast-download.sh ` + `"` + url + `"` + `'`))
+" " ganze Playlists
+bind gP hint -W js -p tri.excmds.shellescape(JS_ARG).then(url => tri.excmds.exclaim_quiet(`i3-swallow-stack.py terminator -e 'podcast-download.sh --yes-playlist ` + `"` + url + `"` + `'`))
+
+
+;; Videos runterladen
+bind gb hint -W js -p tri.excmds.shellescape(JS_ARG).then(url => tri.excmds.exclaim_quiet(`i3-swallow-stack.py terminator -e 'yt-dlp --no-config ` + `"` + url + `"` + `'`))
+
+
+#+end_src
+* Open in Chrome
+:PROPERTIES:
+:ID:       265e77ce-8671-434e-a6ac-25ece1bd14c3
+:ID_CREATED_AT: [2024-03-20 Mi 19:18:42]
+:END:
+#+begin_src conf-tridactyl
+
+bind ,c composite get_current_url | js -p  tri.excmds.exclaim(`google-chrome ` + `"` + JS_ARG + `"`)
+
+#+end_src

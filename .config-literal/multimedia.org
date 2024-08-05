@@ -1,0 +1,173 @@
+#+PROPERTY: header-args:conf :results none :comments none
+#+title: Multimedia
+
+
+* Download
+** Musik
+*** yt-dlp
+#+begin_src conf :tangle /home/peter/.config/yt-dlp/config :noweb yes
+<<youtube-dl-config>>
+--parse-metadata "%(uploader|)s:%(meta_uploader)s"
+--parse-metadata "%(year|)s:%(meta_upload_year)s"
+--embed-metadata
+-v
+#+end_src
+*** youtube-dl
+[[id:4cafb4d8-1116-4503-81f9-f2dc96a8b194][youtube-dl]]
+#+Name: youtube-dl-config
+#+begin_src conf :tangle /home/peter/.config/youtube-dl/config
+# Download
+-o ~/"Music/youtube-dl-download/%(title)s.%(ext)s"
+
+--no-overwrites
+
+--download-archive ~/.config/youtube-dl/downloaded.txt
+
+# Metadata
+--output-na-placeholder ""    # Default NA
+
+--add-metadata
+--metadata-from-title "%(artist)s - %(title)s"
+
+--no-mtime  # leaves modified date unchanged, so it stores the download time (rather than the time video was uploaded on youtube)
+
+# Always extract audio
+-x
+-f 'bestaudio'
+--audio-format opus  
+
+# Subtitles
+# --write-sub
+--write-auto-sub
+--convert-subs lrc   
+--embed-subs   
+#+end_src
+
+*** beets
+[[https://www.linuxserver.io/blog/2016-10-08-managing-your-music-collection-with-beets][Managing your music collection with beets | LinuxServer.io]]
+#+begin_src conf :tangle ~/.config/beets/config.yaml
+plugins: fetchart embedart convert scrub replaygain lastgenre chroma web fromfilename parentwork importfeeds play playlist fuzzy random alternatives edit bandcamp
+directory: ~/Music/mpd/Music/Tracks/
+library: ~/.config/beets/library.blb
+art_filename: cover
+threaded: yes
+original_date: yes
+per_disc_numbering: no
+
+convert:
+    auto: no
+    ffmpeg: /usr/bin/ffmpeg
+    opts: -ab 320k -ac 2 -ar 48000
+    max_bitrate: 320
+    threads: 1
+
+paths:
+    default: $albumartist/$album%aunique{}/$track - $title
+    singleton: $artist/$artist - $title
+    comp: Compilations/$album%aunique{}/$track - $title
+    albumtype_soundtrack: Soundtracks/$album/$track - $title
+    bad:1: Bad/$artist/$title
+
+import:
+    write: yes
+    copy: no
+    move: yes
+    resume: ask
+    incremental: no
+    quiet: yes
+    quiet_fallback: asis
+    timid: no
+    log: ~/.config/beets/beet.log
+    languages: de en
+    duplicte_action: skip
+    autotagging: no
+
+match:
+    strong_rec_thresh: 0.03
+
+chroma:
+    auto: no
+
+musicbrainz:
+    genre: yes
+
+importfeeds:
+    dir: ~/Music/mpd/Music/Playlists/importfeeds
+    formats: m3u_multi
+    relative_to: ~/Music/mpd/Tracks
+
+play:
+    command: emacs_beets_play_command.sh
+
+playlist:
+    auto: yes
+    relative_to: ~/Music/mpd/
+    playlist_dir: ~/Music/mpd/Music/Playlists/importfeeds
+    forward_slash: no
+
+web:
+    host: 127.0.0.1
+    port: 8337
+    readonly: false
+
+alternatives:
+  myplayer:
+    directory: /player
+    paths:
+      default: $album/$title
+    formats: aac mp3
+    query: "onplayer:true"
+    removable: true
+  by-year:
+    directory: by-year
+    paths:
+      default: $year/$album/$title
+    formats: link
+
+#+end_src
+
+** Podcasts 
+*** yt-dlp
+yt-dlp --config-location "/home/peter/.config/yt-dlp/podcast-config"
+#+begin_src conf :tangle /home/peter/.config/yt-dlp/podcast-config :noweb yes
+<<youtube-dl-podcast-config>>
+
+--parse-metadata "%(channel|)s:%(meta_artist)s"
+--parse-metadata "%(uploader|)s:%(meta_uploader)s"
+--parse-metadata "%(year|)s:%(meta_upload_year)s"
+--embed-metadata
+
+--write-description
+--embed-chapters
+--write-info-json
+
+#+end_src
+*** youtube-dl
+[[id:4cafb4d8-1116-4503-81f9-f2dc96a8b194][youtube-dl]]
+#+Name: youtube-dl-podcast-config
+#+begin_src conf :tangle /home/peter/.config/youtube-dl/podcasts/config
+# Download
+-o ~/"Music/mpd/Podcasts/%(channel)s/%(title)s.%(ext)s"
+
+--no-overwrites
+
+--download-archive ~/.config/youtube-dl/downloaded.txt
+
+# Metadata
+--output-na-placeholder ""    # Default NA
+
+--add-metadata
+
+--no-mtime  # leaves modified date unchanged, so it stores the download time (rather than the time video was uploaded on youtube)
+
+# Always extract audio
+-x
+-f 'bestaudio'
+--audio-format opus   # am besten vielleicht so fix, so dass ich sicher sein kann dass alle Metadatenfelder die ich will zur Verfügung stehen
+#+end_src
+
+* mpv
+#+begin_src conf :tangle ~/.config/mpv/mpv.conf :tangle-mode (identity #o755)
+ytdl-raw-options=ignore-config=
+
+#+end_src

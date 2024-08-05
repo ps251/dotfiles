@@ -1,0 +1,117 @@
+;; https://github.com/jtroo/kanata/blob/main/cfg_samples/kanata.kbd
+(defsrc
+ grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+ tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+ caps a    s    d    f    g    h    j    k    l    ;    '    ret
+ lsft z    x    c    v    b    n    m    ,    .    /    rsft
+ lctl lmet lalt           spc            ralt comp rctl rmet
+ )
+
+
+(deflayer qwerty
+          lrld    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+          tab  q    w    e    r    t    y    u    i    o    @p-alt    [    ]    \
+          caps a    s    d    f    g    h    j    k    l    @sc-caps    @qu-ctl    ret
+          lsft z    x    c    @v-shift    @b-caps    @n-super    @m-alt    ,    @dot-shift    @slash-shift    @rsft-q
+          lctl lmet lalt           @spc-mir            @lalt-q @comp-q @rctl-q  @rmet-q 
+          )
+
+(deflayer mirror
+          a    1    2    3    4    5    6    5    4    3    2    1    =    bspc
+          tab  q    w    e    r    t    t    r    e    w    q    tab    @metS   @altS 
+          caps a    s    d    f    g    g    f    d    s    a    @ctlS    esc
+          lsft z    x    c    v    b    v    c    x    z    @sftS    @sftS
+          lctl lmet lalt           spc            @lalt-q @comp-q @rctl-q  @rmet-q 
+          )
+(deflayer mirror-ctl
+          a    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+          tab  q    w    e    r    t    y    u    i    i    o    p    @metS   @altS 
+          caps a    s    d    f    g    h    j    k    l    ;    @metS    esc
+          lsft z    x    c    v    b    n    m    ,    .    @sftS    @sftS
+          lctl lmet lalt           spc            @lalt-q @comp-q @rctl-q  @rmet-q 
+          )
+
+
+
+(defvirtualkeys
+ ctl lctl
+ sft lsft
+ met lmet
+ alt lalt
+ cap caps
+
+ rel (multi
+      ;; (on-press press-virtualkey sft)
+      ;; (on-press press-virtualkey met)
+      ;; (on-press press-virtualkey alt)
+      ;; (on-press press-virtualkey cap)
+      ;; (on-press press-virtualkey ctl)
+      ;; (on-release release-virtualkey sft)
+      ;; (on-release release-virtualkey met)
+      ;; (on-release release-virtualkey alt)
+      ;; (on-release release-virtualkey cap)
+      ;; (on-release release-virtualkey ctl)
+      (on-press release-virtualkey sft)
+      (on-press release-virtualkey met)
+      (on-press release-virtualkey alt)
+      (on-press release-virtualkey cap)
+      (on-press release-virtualkey ctl)
+      )
+ 
+ ctlS (on-press toggle-virtualkey ctl)
+ sftS (on-press toggle-virtualkey sft)
+ metS (on-press toggle-virtualkey met)
+ altS (on-press toggle-virtualkey alt)
+ capS (on-press toggle-virtualkey cap)
+ 
+ )
+
+(defalias
+
+  ;; tal (multi (on-press press-vkey tal) (on-release release-vkey tal))
+  ;; lat (on-press tap-vkey lat)
+  ctlS (on-press press-virtualkey ctlS)
+  sftS (on-press press-virtualkey sftS)
+  metS (on-press press-virtualkey metS)
+  altS (on-press press-virtualkey altS)
+  capS (on-press press-virtualkey capS)
+
+  )
+
+
+(defalias
+  m-alt (tap-hold-release 200 200 m lalt)
+  n-super (tap-hold-release 200 200 n lmet)
+  b-caps (tap-hold-release 200 200 b caps)
+  v-shift (tap-hold-release 200 200 v rsft)
+  sc-caps (tap-hold-release 200 200 ; caps)
+  dot-shift (tap-hold-release 200 200 . rsft)
+  slash-shift (tap-hold-release 200 200 / rsft)
+  p-alt (tap-hold-release 200 200 p lalt)
+  spc-mir (tap-hold-release 200 200 spc (multi (on-release press-virtualkey rel) (layer-while-held mirror) ) )
+  ;; spc-mir (layer-while-held mirror)
+  ;; rctl
+  qu-ctl (tap-hold-release 200 200 ' lctl) 
+  )
+
+(defalias
+  ;; rsft-q (tap-hold-release 200 200 (one-shot-press-pcancel 2000 rsft) rsft)
+  ;; comp-q (tap-hold-release 200 200 (one-shot-press-pcancel 2000 comp) comp)  
+  ;; lalt-q (tap-hold-release 200 200 (one-shot-press-pcancel 2000 lalt) lctl)
+  rsft-q (tap-hold-release 200 200 (one-shot 700 rsft) rsft)
+  ;; comp-q (tap-hold-release 200 200 (one-shot 700 comp) comp)  
+  comp-q (tap-hold-release 200 200 (tap-dance-eager 500 ( (one-shot 700 lalt) (one-shot 700 lmet) ) ) comp)  
+  ;; lalt-q (tap-hold-release 200 200 (one-shot 700 lalt) (multi lctl (on-release press-virtualkey rel) (layer-while-held mirror-ctl)))
+  lalt-q (tap-hold-release 200 200 (tap-dance-eager 500 ( (one-shot 700 lctl) (one-shot 700 lmet) ) ) (multi lalt (on-release press-virtualkey rel) (layer-while-held mirror-ctl)))
+  ;; lalt-q (tap-hold-release 200 200 (tap-dance 500 ( (one-shot 700 lalt) (one-shot 700 (multi lmet lctl )) ) ) (multi lctl (on-release press-virtualkey rel) (layer-while-held mirror-ctl)))
+  rmet-q (tap-hold-release 200 200 (tap-dance-eager 500 ( (one-shot 700 rmet) (one-shot 700 caps) ) ) rmet)
+  rctl-q (tap-hold-release 200 200 (tap-dance-eager 500 ( (one-shot 700 rmet) (one-shot 700 rsft) ) ) rctl)
+
+
+
+
+
+  )
+
+;; tap-hold-release
+;; tap-hold-release-keys

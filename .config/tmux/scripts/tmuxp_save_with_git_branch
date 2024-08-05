@@ -1,0 +1,26 @@
+#!/bin/bash
+
+tmux set-environment -g TMUX_GIT_BRANCH "$(cd "$(tmux display-message -p '#{pane_current_path}')" && git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+
+if [ -z "${TMUX_GIT_BRANCH}" ] || [ "${TMUX_GIT_BRANCH}" == "main" ] || [ "${TMUX_GIT_BRANCH}" == "master" ]; then
+    tmux set-environment -g TMUX_BRANCH_SEPARATOR ""
+else
+    tmux set-environment -g TMUX_BRANCH_SEPARATOR "@@"
+fi
+
+SESSION_NAME="$(tmux display-message -p '#{session_name}')"
+
+if [[ "${SESSION_NAME}" != *"${TMUX_BRANCH_SEPARATOR}${TMUX_GIT_BRANCH}"* ]]; then
+    tmux rename-session "${SESSION_NAME}${TMUX_BRANCH_SEPARATOR}${TMUX_GIT_BRANCH}"
+    SESSION_NAME="${SESSION_NAME}${TMUX_BRANCH_SEPARATOR}${TMUX_GIT_BRANCH}"
+fi
+
+# SESSION_PWD="$(tmux display-message -p '#{session_start_path}')"
+
+
+if tmuxp freeze -yq --force -o "$HOME/.tmuxp/${SESSION_NAME}.yaml" "${SESSION_NAME}"; then
+    # echo "# ${SESSION_PWD}" >> "$HOME/.tmuxp/${SESSION_NAME}.yaml"
+    tmux display-message "Session saved successfully. Final session name: ${SESSION_NAME}"
+else
+    tmux display-message "Failed to save session. Please check the tmuxp command output for more information."
+fi
